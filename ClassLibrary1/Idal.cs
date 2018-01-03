@@ -10,19 +10,19 @@ namespace DAL
     {
         void addNanny(BE.Nanny nan);
         void removeNanny(int id);
-        void updateNannyDetails();
+        void updateNannyDetails(BE.Nanny nan);
 
         void addMother(BE.Mother mam);
         void removeMother(int id);
-        void updateMotherDetalse();
+        void updateMotherDetalse(BE.Mother mam);
 
         void addChild(BE.Child child);
         void removeChild(int id);
-        void updateChildDetails();
+        void updateChildDetails(BE.Child child);
 
-        void addContract();
-        void updateContract();
-        void removeContract();
+        void addContract(BE.Contract con);
+        void updateContract(BE.Contract con);
+        void removeContract(int ContractNumber);
 
         List<BE.Nanny> getNannis();
         List<BE.Mother> getMoters();

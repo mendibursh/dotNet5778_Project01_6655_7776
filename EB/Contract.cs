@@ -8,25 +8,27 @@ namespace BE
 {
     public class Contract
     {
-        int contractNumber;//?????????????
+        public int ContractNumber { get; set; }
 
-        int nannyId;
+        public int NannyId { get; set; }
 
-        int childId;
+        public int MotherId { get; set; }
 
-        bool isAcquaintance;
+        public int ChildId { get; set; }
 
-        bool isContract;
+        public bool IsAcquaintance { get; set; }
 
-        double rateOfHour;
+        public bool IsContract { get; set; }
 
-        double rateOfMonth;
+        public double RateOfHour { get; set; }
 
-        bool isHourlyRate;
+        public double RateOfMonth { get; set; }
 
-        DateTime stertEmployment;
+        public bool IsHourlyRate { get; set; }
 
-        DateTime endEmployment;
+        public DateTime stertEmployment { get; set; }
+
+        public DateTime endEmployment { get; set; }
 
         public override string ToString()//????
         {

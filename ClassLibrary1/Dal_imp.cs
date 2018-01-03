@@ -11,15 +11,22 @@ namespace DAL
     {
         static DS.DataSource source;
         static readonly IDAL instance = new Dal_imp();
+        static int Range = 1000;
         public static IDAL Instance { get {return instance;} }
 
         Dal_imp () { }
         static Dal_imp () { }
 
+
+        /// <summary>
+        /// adds a Nanny object to the list
+        /// throw Exception if there a Nanny with the same id.
+        /// </summary>
+        /// <param name="nen">a Nanny object to add</param>
         public void addNanny(BE.Nanny nen)
         {
             if (source.NannyList.Any(x => x.Id == nen.Id)) throw new Exception();///.........
-            source.NannyList.Add(nen.clone());//????colne???   
+            source.NannyList.Add(nen);//????colne???   
         }
 
         /// <summary>
@@ -30,15 +37,27 @@ namespace DAL
         public void removeNanny(int id)
         {
             if (!source.NannyList.Any(X => X.Id == id)) throw new Exception();//.......
-            List<Nanny> list = source.NannyList.Where(c => c.Id == id).ToList();
+            source.NannyList = source.NannyList.Where(c => c.Id != id).ToList();
+            
             //not need to check if there are a contract?????
         }
 
-        public void updateNannyDetails()
+        //-------
+        public void updateNannyDetails(BE.Nanny nan)//???????????
         {
-            throw new NotImplementedException();
+            if (source.NannyList.All(X => X.Id != nan.Id)) throw new Exception();//.......
+            source.NannyList = (from item in source.NannyList
+                                 where item.Id != nan.Id
+                                 select item).ToList();
+            source.NannyList.Add(nan);
         }
 
+       
+        /// <summary>
+        /// adds a Mother object to the list
+        /// throw Exception if there a mother with the same id.
+        /// </summary>
+        /// <param name="mam">mother object to add</param>
         public void addMother(BE.Mother mam)
         {
             if (source.MotherList.Any(x => x.Id == mam.Id)) throw new Exception();//.........
@@ -46,6 +65,7 @@ namespace DAL
             //not need to chrch if is exsis a contract?????????
         }
 
+        //--------
         /// <summary>
         /// Deletes a certain Mother from the list.
         /// Sending an exception if it does not exist.
@@ -53,21 +73,35 @@ namespace DAL
         /// <param name="id">id number</param>
         public void removeMother(int id)
         {
-            if (!source.MotherList.Any(X => X.Id == id)) throw new Exception();//.......
+            if (source.MotherList.All(X => X.Id != id)) throw new Exception();//.......
             source.MotherList = source.MotherList.Where(c => c.Id == id).ToList();
         }
 
-        public void updateMotherDetalse()
+        /// <summary>
+        /// replace the 
+        /// </summary>
+        /// <param name="mam"></param>
+        public void updateMotherDetalse(BE.Mother mam)
         {
-            throw new NotImplementedException();
+            if (source.MotherList.All(X => X.Id != mam.Id)) throw new Exception();//.......
+            source.MotherList = (from item in source.MotherList
+                                 where item.Id != mam.Id
+                                 select item).ToList();
+            source.MotherList.Add(mam);
         }
 
+
+        /// <summary>
+        /// adds a Child object to the list
+        /// throw Exception if there a Child with the same id.
+        /// </summary>
+        /// <param name="child">a Child object to add</param>
         public void addChild(BE.Child child)
         {
             if (source.ChildrenList.Any(x => x.Id == child.Id)) throw new Exception();//.....
             source.ChildrenList.Add(child.clone());
-            //we need to cherch if there are a cntraect to the child??????????
         }
+
 
         /// <summary>
         /// Deletes a certain Child from the list.
@@ -78,47 +112,85 @@ namespace DAL
         {
             if (source.ChildrenList.All(x => x.Id != id)) throw new Exception();//.........
             source.ChildrenList = source.ChildrenList.Where(x => x.Id == id).ToList();
+            //we need to cherch if there are a cntraect to the child??????????
         }
 
-        public void updateChildDetails()
+        public void updateChildDetails(BE.Child child)
         {
-            throw new NotImplementedException();
+            if (source.ChildrenList.All(X => X.Id != child.Id)) throw new Exception();//.......
+            source.ChildrenList = (from item in source.ChildrenList
+                                   where item.Id != child.Id
+                                 select item).ToList();
+            source.ChildrenList.Add(child);
         }
 
-        public void addContract()
+        /// <summary>
+        /// adds to the contract a range number
+        /// adds a Contract to the collction of Contracts
+        /// 
+        /// Exseption:
+        /// if there are a contract to this child
+        /// or if the mother or the nanny is not there
+        /// </summary>
+        /// <param name="con">a contract to add</param>
+        public void addContract(BE.Contract con)
         {
-            throw new NotImplementedException();
+            if (source.ContractList.Any(x => x.ChildId == con.ChildId)) throw new Exception();
+            if (source.NannyList.All(x => x.Id != con.NannyId)) throw new Exception();
+            if (source.MotherList.All(x => x.Id != con.MotherId)) throw new Exception();
+            con.ContractNumber = ++Range;
+            source.ContractList.Add(con);
         }
 
-        public void updateContract()
+
+        public void updateContract(BE.Contract con)
         {
-            throw new NotImplementedException();
+            if (source.ContractList.All(X => X.ChildId != con.ChildId)) throw new Exception();//.......
+            source.ContractList = (from item in source.ContractList
+                                   where item.ChildId != con.ChildId
+                                   select item).ToList();
+            source.ContractList.Add(con);
         }
 
-
-        public void removeContract()
+        /// <summary>
+        /// delete one contract from the colection
+        /// 
+        /// Exception:
+        /// if there not exsist the certin contract.
+        /// </summary>
+        /// <param name="con">the contract number to delete</param>
+        public void removeContract(int numberContract)
         {
-            throw new NotImplementedException();
+            if (source.ContractList.Any(x => x.ContractNumber == numberContract)) throw new Exception();
+            source.ContractList = source.ContractList.Where(x => x.ContractNumber != numberContract).ToList();
         }
-
+        // the return the clone list
         public List<Nanny> getNannis()
         {
-            throw new NotImplementedException();
+            if (source.NannyList == null) throw new Exception();
+            var temp = source.NannyList.Select(item => item).ToList();
+            return temp;
         }
-
+         
         public List<Mother> getMoters()
         {
-            throw new NotImplementedException();
+            if (source.MotherList == null) throw new Exception();
+            var temp = source.MotherList.Select(item=>item).ToList();
+            return temp;
         }
 
         public List<Child> getChildren()
         {
-            throw new NotImplementedException();
+            if (source.ChildrenList == null) throw new Exception();
+            var temp = source.ChildrenList.Select(item => item).ToList();
+            return temp;
         }
 
         public List<Contract> getContracts()
         {
-            throw new NotImplementedException();
+            if (source.ContractList == null) throw new Exception();
+            var temp = source.ContractList.Select(item => item).ToList();
+            return temp;
         }
     }
 }

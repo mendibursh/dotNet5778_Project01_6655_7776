@@ -11,35 +11,15 @@ namespace BE
         
         public int Id { get; set; }
 
-        int MotherId { get; set; }
+        public int MotherId { get; set; }
         
-        string firstName;
-        string P_firstName
-        {
-            set { firstName = value; }
-            get { return firstName; }
-        }
+        public string FirstName { get; set; }
+        
+        public string LastName { get; set; }
+     
+        bool IsSpcialNeed { get; set; }
 
-        string lastName;
-        string P_LastName
-        {
-            set { firstName = value; }
-            get { return firstName; }
-        }
-
-        bool isSpcialNeed;
-        bool P_isSpicalNeed
-        {
-            set { isSpcialNeed = value; }
-            get { return isSpcialNeed; }
-        }
-
-        string spicialNeed;
-        string P_SpicialNeed
-        {
-            set { spicialNeed = value; }
-            get { return spicialNeed; }
-        }
+        string SpicialNeed { get; set; }
 
         public override string ToString()//?????????
         {
