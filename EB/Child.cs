@@ -16,6 +16,8 @@ namespace BE
         public string FirstName { get; set; }
         
         public string LastName { get; set; }
+
+        public DateTime BirthDate { get; set; }
      
         bool IsSpcialNeed { get; set; }
 
@@ -26,9 +28,15 @@ namespace BE
             return base.ToString();
         }
 
-        public Child clone()
+        public Child(int id, int motherId, string firstName, string lastName, DateTime birthDate, bool isSpcialNeed, string spicialNeed)
         {
-            return (Child)MemberwiseClone();
+            Id = id;
+            MotherId = motherId;
+            FirstName = firstName;
+            LastName = lastName;
+            BirthDate = birthDate;
+            IsSpcialNeed = isSpcialNeed;
+            SpicialNeed = spicialNeed;
         }
     }
 }

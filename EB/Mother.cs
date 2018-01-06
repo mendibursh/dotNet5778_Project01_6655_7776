@@ -9,16 +9,16 @@ namespace BE
     public class Mother
     {
         public int Id { set; get; }
- 
-        string LastName { set; get; }
 
-        string firstame { set; get; }
+		public string LastName { set; get; }
 
-        string SelNumber { set; get; }
+		public string firstame { set; get; }
 
-        string Adress { get; set; }
-       
-        string CerchArea { get; set; }
+		public string SelNumber { set; get; }
+
+        public  string Adress { get; set; }
+
+		public string CerchArea { get; set; }
        
         DateTime[,] TimeWork = new DateTime[2, 6];//????
 
@@ -32,6 +32,18 @@ namespace BE
         public Mother clone()
         {
             return (Mother)MemberwiseClone();
+        }
+
+        public Mother(int id, string lastName, string firstame, string selNumber, string adress, string cerchArea, DateTime[,] timeWork, string remarks)
+        {
+            Id = id;
+            LastName = lastName;
+            this.firstame = firstame;
+            SelNumber = selNumber;
+            Adress = adress;
+            CerchArea = cerchArea;
+            TimeWork = timeWork;
+            Remarks = remarks;
         }
     }
 }

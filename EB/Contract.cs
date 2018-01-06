@@ -24,6 +24,8 @@ namespace BE
 
         public double RateOfMonth { get; set; }
 
+        public double Salary { get; set; }
+
         public bool IsHourlyRate { get; set; }
 
         public DateTime stertEmployment { get; set; }

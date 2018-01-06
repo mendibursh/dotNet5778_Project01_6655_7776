@@ -146,6 +146,10 @@ namespace DAL
         public void updateContract(BE.Contract con)
         {
             if (source.ContractList.All(X => X.ChildId != con.ChildId)) throw new Exception();//.......
+            //var tempInt = (from item in source.ContractList
+            //               where item.ChildId == con.ChildId
+            //               select item.ContractNumber);
+            //con.ContractNumber = Cast<int>(tempInt);
             source.ContractList = (from item in source.ContractList
                                    where item.ChildId != con.ChildId
                                    select item).ToList();
@@ -164,33 +168,73 @@ namespace DAL
             if (source.ContractList.Any(x => x.ContractNumber == numberContract)) throw new Exception();
             source.ContractList = source.ContractList.Where(x => x.ContractNumber != numberContract).ToList();
         }
-        // the return the clone list
+
+        /// <summary>
+        /// return the clone list
+        /// </summary>
+        /// <returns></returns>
         public List<Nanny> getNannis()
         {
             if (source.NannyList == null) throw new Exception();
-            var temp = source.NannyList.Select(item => item).ToList();
+            var temp = source.NannyList.Select(item => item= (Nanny)MemberwiseClone()).ToList();
             return temp;
         }
          
-        public List<Mother> getMoters()
+        public List<Mother> getMothers()
         {
             if (source.MotherList == null) throw new Exception();
-            var temp = source.MotherList.Select(item=>item).ToList();
+            var temp = source.MotherList.Select(item=>item = (Mother)MemberwiseClone()).ToList();
             return temp;
         }
 
         public List<Child> getChildren()
         {
             if (source.ChildrenList == null) throw new Exception();
-            var temp = source.ChildrenList.Select(item => item).ToList();
+            var temp = source.ChildrenList.Select(item => item = (Child)MemberwiseClone()).ToList();
             return temp;
         }
 
-        public List<Contract> getContracts()
+        public List<Contract> GetContracts()
         {
             if (source.ContractList == null) throw new Exception();
-            var temp = source.ContractList.Select(item => item).ToList();
+            var temp = source.ContractList.Select(item => item = (Contract)MemberwiseClone()).ToList();
             return temp;
+        }
+
+        public BE.Child GetChild(int idNumber)
+        {
+            if (source.ChildrenList.All(x => x.Id != idNumber)) throw new Exception();
+            var child = from item in source.ChildrenList
+                        where item.Id == idNumber
+                        select (Child)MemberwiseClone();
+            return child.ToList()[0];
+        }
+
+        public BE.Nanny GetNanny(int idNumber)
+        {
+            if (source.NannyList.All(x => x.Id != idNumber)) throw new Exception();
+            var nanny = from item in source.NannyList
+                        where item.Id == idNumber
+                        select (Nanny)MemberwiseClone();
+            return nanny.ToList()[0];
+        }
+
+        public BE.Mother GetMother(int idNumber)
+        {
+            if (source.MotherList.All(x => x.Id != idNumber)) throw new Exception();
+            var mother = from item in source.MotherList
+                        where item.Id == idNumber
+                        select (Mother)MemberwiseClone();
+            return mother.ToList()[0];
+        }
+
+        public BE.Contract GetContract(int idNumber)
+        {
+            if (source.ContractList.All(x => x.ChildId != idNumber)) throw new Exception();
+            var con = from item in source.ContractList
+                        where item.ChildId == idNumber
+                        select (Contract)MemberwiseClone();
+            return con.ToList()[0];
         }
     }
 }

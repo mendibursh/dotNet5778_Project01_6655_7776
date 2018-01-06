@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL
+namespace BL
 {
-    public interface IDAL
+    interface IBL
     {
         void addNanny(BE.Nanny nan);
         void removeNanny(int id);
@@ -29,9 +29,5 @@ namespace DAL
         List<BE.Child> getChildren();
         List<BE.Contract> getContracts();
 
-        BE.Child GetChild(int idNumber);
-        BE.Nanny GetNanny(int idNumber);
-        BE.Mother GetMother(int idNumber);
-        BE.Contract GetContract(int idNumber);
     }
 }
