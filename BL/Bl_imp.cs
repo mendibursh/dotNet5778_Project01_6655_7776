@@ -280,9 +280,30 @@ namespace BL
 			return dis;
 		}
 
-	
+		public List<Nanny> nannisByDistance(int MotherId , int distance, string address = null)
+		{
+			Mother TempMother = dl.GetMother(MotherId);
 
+			if (address != null)
+			{
+				var temp = from n in 
+							let dis = CalculateDistance(n.adress,address)
+							orderby dis			
+			}
+			else
+			{
+				var temp = from n in
+							let dis = CalculateDistance(n.adress, TempMother.Adress)
+						    orderby dis
+			}
+
+			foreach var n in temp
+				{
+
+
+				}
+
+
+		}
     }
-	
-
 }
