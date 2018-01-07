@@ -248,7 +248,12 @@ namespace BL
 			return group;
 		}
 
-
+		/// <summary>
+		/// To caculte the distance between them (the 
+		/// </summary>
+		/// <param name="nan"> the nanny</param>
+		/// <param name="mom"> the mom </param>
+		/// <returns></returns>
 		public int nannyAndMomDis ( Nanny nan , Mother mom )
 		{
 
@@ -256,6 +261,8 @@ namespace BL
 			int dis = CalculateDistance(nan.Adress, mom.Adress);
 			return dis;
 		}
+
+	
 
     }
 	
