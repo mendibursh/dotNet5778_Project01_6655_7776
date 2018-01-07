@@ -13,8 +13,7 @@ namespace DAL
 		public DALException() : base() { }
 		public DALException(string message) : base(message) { }
 		public DALException(string message, Exception inner) : base(message, inner) { }
-		protected DALException(SerializationInfo info, StreamingContext context) : base(info, context) { }
-			
+		protected DALException(SerializationInfo info, StreamingContext context) : base(info, context) { }		
 	}
 
 }

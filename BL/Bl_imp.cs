@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace BL
 {
-    public class Bl_imp : IBL
+    public class Bl_imp : IBL 
     {
         DAL.IDAL dl;
 
@@ -22,7 +22,15 @@ namespace BL
 
         public void addChild(Child child)
         {
-            dl.addChild(child);//clone????
+			try
+			{
+				dl.addChild(child);
+			}
+			catch
+			{
+
+			}
+            
         }
 
         public void addContract(Contract con)
