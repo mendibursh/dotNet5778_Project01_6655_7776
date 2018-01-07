@@ -8,12 +8,14 @@ using GoogleMapsApi.Entities.Directions.Request;
 using GoogleMapsApi;
 using GoogleMapsApi.Entities.Directions.Response;
 using System.Threading;
+using DAL;
 
 namespace BL
 {
     public class Bl_imp : IBL 
     {
         DAL.IDAL dl;
+		
 
         public Bl_imp()
         {
@@ -22,14 +24,8 @@ namespace BL
 
         public void addChild(Child child)
         {
-			try
-			{
-				dl.addChild(child);
-			}
-			catch
-			{
-
-			}
+			try	{ dl.addChild(child);}
+			catch (DALException exception) { throw new BlExeception(exception.Message); }
             
         }
 
@@ -102,77 +98,91 @@ namespace BL
 
         public void addMother(Mother mam)
         {
-            dl.addMother(mam);
-        }
+			try { dl.addMother(mam); }
+			catch (DALException exception) { throw new BlExeception(exception.Message); }
+		}
 
         public void addNanny(Nanny nan)
         {
             TimeSpan minAge = new TimeSpan(365 * 18);
             if ( DateTime.Now - nan.BirthDate < minAge) throw new Exception();
-            dl.addNanny(nan);
-        }
+			try { dl.addNanny(nan); }
+			catch (DALException exception) { throw new BlExeception(exception.Message); }
+		}
 
         public List<Child> getChildren()
         {
-            return dl.getChildren(); //clone???
-        }
+			try { return dl.getChildren(); }
+			catch (DALException exception) { throw new BlExeception(exception.Message); }
+		}
 
         public List<Contract> getContracts()
         {
-            return dl.getContracts();
-        }
+			try { return dl.getContracts(); }
+			catch (DALException exception) { throw new BlExeception(exception.Message); }
+		}
 
         public List<Mother> getMothers()
         {
-            return dl.getMothers();
-        }
+			try { return dl.getMothers(); }
+			catch (DALException exception) { throw new BlExeception(exception.Message); }
+		}
 
         public List<Nanny> getNannis()
         {
-            return dl.getNannis();
-        }
+			try { return dl.getNannis(); }
+			catch (DALException exception) { throw new BlExeception(exception.Message); }
+		}
 
         public void removeChild(int id)
         {
-            dl.removeChild(id);
-        }
+			try { dl.removeChild(id); }
+			catch (DALException exception) { throw new BlExeception(exception.Message); }
+		}
 
         public void removeContract(int ContractNumber)
         {
-            dl.removeContract(ContractNumber);
-        }
+			try { dl.removeContract(ContractNumber); }
+			catch (DALException exception) { throw new BlExeception(exception.Message); }
+		}
 
         public void removeMother(int id)
         {
-            dl.removeMother(id);
-        }
+			try { dl.removeMother(id); }
+			catch (DALException exception) { throw new BlExeception(exception.Message); }
+		}
 
         public void removeNanny(int id)
         {
-            dl.removeNanny(id);
-        }
+			try { dl.removeNanny(id); }
+			catch (DALException exception) { throw new BlExeception(exception.Message); }
+		}
 
         public void updateChildDetails(Child child)
         {
-            dl.updateChildDetails(child);
-        }
+			try { dl.updateChildDetails(child); }
+			catch (DALException exception) { throw new BlExeception(exception.Message); }
+		}
 
         public void updateContract(Contract con)
         {
-            dl.updateContract(con);
-        }
+			try { dl.updateContract(con); }
+			catch (DALException exception) { throw new BlExeception(exception.Message); }
+		}
 
         public void updateMotherDetalse(Mother mam)
         {
-            dl.updateMotherDetalse(mam);
-        }
+			try {dl.updateMotherDetalse(mam); }
+			catch (DALException exception) { throw new BlExeception(exception.Message); }
+		}
 
         public void updateNannyDetails(Nanny nan)
         {
 			TimeSpan minAge = new TimeSpan(365 * 18);
             if (nan.BirthDate - DateTime.Now < minAge) throw new Exception();
-            dl.updateNannyDetails(nan);
-        }
+			try { dl.updateNannyDetails(nan); }
+			catch (DALException exception) { throw new BlExeception(exception.Message); }
+		}
 
         public static int CalculateDistance(string source, string dest)
         {

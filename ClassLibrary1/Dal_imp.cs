@@ -25,7 +25,7 @@ namespace DAL
         /// <param name="nen">a Nanny object to add</param>
         public void addNanny(BE.Nanny nen)
         {
-            if (source.NannyList.Any(x => x.Id == nen.Id)) throw new DALExeption ();///.........
+            if (source.NannyList.Any(x => x.Id == nen.Id)) throw new DALException("There is the same nanny already");///.........
             source.NannyList.Add(nen); 
         }
 
@@ -36,7 +36,7 @@ namespace DAL
         /// <param name="nan">id number</param>
         public void removeNanny(int id)
         {
-            if (!source.NannyList.Any(X => X.Id == id)) throw new DALExeption();//.......
+            if (!source.NannyList.Any(X => X.Id == id)) throw new DALException("There is  no nanny to delete");//.......
             source.NannyList = source.NannyList.Where(c => c.Id != id).ToList();
             
             //not need to check if there are a contract?????
@@ -45,7 +45,7 @@ namespace DAL
         //-------
         public void updateNannyDetails(BE.Nanny nan)//???????????
         {
-            if (source.NannyList.All(X => X.Id != nan.Id)) throw new DALExeption();//.......
+            if (source.NannyList.All(X => X.Id != nan.Id)) throw new DALException("There is no nanny to update");//.......
             source.NannyList = (from item in source.NannyList
                                  where item.Id != nan.Id
                                  select item).ToList();
@@ -60,7 +60,7 @@ namespace DAL
         /// <param name="mam">mother object to add</param>
         public void addMother(BE.Mother mam)
         {
-            if (source.MotherList.Any(x => x.Id == mam.Id)) throw new DALExeption();//.........
+            if (source.MotherList.Any(x => x.Id == mam.Id)) throw new DALException("There is the same mother id already");//.........
             source.MotherList.Add(mam.clone());
             //not need to chrch if is exsis a contract?????????
         }
@@ -73,7 +73,7 @@ namespace DAL
         /// <param name="id">id number</param>
         public void removeMother(int id)
         {
-            if (source.MotherList.All(X => X.Id != id)) throw new DALExeption();//.......
+            if (source.MotherList.All(X => X.Id != id)) throw new DALException("There is no Mother to Delete");//.......
             source.MotherList = source.MotherList.Where(c => c.Id == id).ToList();
         }
 
@@ -83,7 +83,7 @@ namespace DAL
         /// <param name="mam"></param>
         public void updateMotherDetalse(BE.Mother mam)
         {
-            if (source.MotherList.All(X => X.Id != mam.Id)) throw new DALExeption();//.......
+            if (source.MotherList.All(X => X.Id != mam.Id)) throw new DALException("There is no Mother to update");//.......
             source.MotherList = (from item in source.MotherList
                                  where item.Id != mam.Id
                                  select item).ToList();
@@ -98,8 +98,8 @@ namespace DAL
         /// <param name="child">a Child object to add</param>
         public void addChild(BE.Child child)
         {
-            if (source.ChildrenList.Any(x => x.Id == child.Id)) throw new DALExeption();//.....
-            source.ChildrenList.Add(child.clone());
+            if (source.ChildrenList.Any(x => x.Id == child.Id)) throw new DALException("There is the same child id alredy");//.....
+            source.ChildrenList.Add(child);
         }
 
 
@@ -110,14 +110,14 @@ namespace DAL
         /// <param name="id">id number</param>
         public void removeChild(int id)
         {
-            if (source.ChildrenList.All(x => x.Id != id)) throw new DALExeption();//.........
+            if (source.ChildrenList.All(x => x.Id != id)) throw new DALException("There is no child to delete");//.........
             source.ChildrenList = source.ChildrenList.Where(x => x.Id == id).ToList();
             //we need to cherch if there are a cntraect to the child??????????
         }
 
         public void updateChildDetails(BE.Child child)
         {
-            if (source.ChildrenList.All(X => X.Id != child.Id)) throw new DALExeption();//.......
+            if (source.ChildrenList.All(X => X.Id != child.Id)) throw new DALException("There is no child to update");//.......
             source.ChildrenList = (from item in source.ChildrenList
                                    where item.Id != child.Id
                                  select item).ToList();
@@ -135,9 +135,9 @@ namespace DAL
         /// <param name="con">a contract to add</param>
         public void addContract(BE.Contract con)
         {
-            if (source.ContractList.Any(x => x.ChildId == con.ChildId)) throw new DALExeption();
-            if (source.NannyList.All(x => x.Id != con.NannyId)) throw new DALExeption();
-            if (source.MotherList.All(x => x.Id != con.MotherId)) throw new DALExeption();
+            if (source.ContractList.Any(x => x.ChildId == con.ChildId)) throw new DALException("There is the same contract with this child id already");
+            if (source.NannyList.All(x => x.Id != con.NannyId)) throw new DALException("There is the same contract with this nanny id already");
+            if (source.MotherList.All(x => x.Id != con.MotherId)) throw new DALException("There is the same contract with this mother id  already");
             con.ContractNumber = ++Range;
             source.ContractList.Add(con);
         }
@@ -145,7 +145,7 @@ namespace DAL
 
         public void updateContract(BE.Contract con)
         {
-            if (source.ContractList.All(X => X.ChildId != con.ChildId)) throw new DALExeption();//.......
+            if (source.ContractList.All(X => X.ChildId != con.ChildId)) throw new DALException("There is no contract to update");//.......
             //var tempInt = (from item in source.ContractList
             //               where item.ChildId == con.ChildId
             //               select item.ContractNumber);
@@ -165,7 +165,7 @@ namespace DAL
         /// <param name="con">the contract number to delete</param>
         public void removeContract(int numberContract)
         {
-            if (source.ContractList.Any(x => x.ContractNumber == numberContract)) throw new DALExeption();
+            if (source.ContractList.Any(x => x.ContractNumber == numberContract)) throw new DALException("There is no contract to remove");
             source.ContractList = source.ContractList.Where(x => x.ContractNumber != numberContract).ToList();
         }
 
@@ -175,35 +175,35 @@ namespace DAL
         /// <returns></returns>
         public List<Nanny> getNannis()
         {
-            if (source.NannyList == null) throw new DALExeption();
+            if (source.NannyList == null) throw new DALException("The list of nannis are empty");
             var temp = source.NannyList.Select(item => item= (Nanny)MemberwiseClone()).ToList();
             return temp;
         }
          
         public List<Mother> getMothers()
         {
-            if (source.MotherList == null) throw new DALExeption();
+            if (source.MotherList == null) throw new DALException("The list of mothers are empty");
             var temp = source.MotherList.Select(item=>item = (Mother)MemberwiseClone()).ToList();
             return temp;
         }
 
         public List<Child> getChildren()
         {
-            if (source.ChildrenList == null) throw new DALExeption();
+            if (source.ChildrenList == null) throw new DALException("The list of children are empty");
             var temp = source.ChildrenList.Select(item => item = (Child)MemberwiseClone()).ToList();
             return temp;
         }
 
         public List<Contract> GetContracts()
         {
-            if (source.ContractList == null) throw new DALExeption();
+            if (source.ContractList == null) throw new DALException("The list of contracts are empty");
             var temp = source.ContractList.Select(item => item = (Contract)MemberwiseClone()).ToList();
             return temp;
         }
 
         public BE.Child GetChild(int idNumber)
         {
-            if (source.ChildrenList.All(x => x.Id != idNumber)) throw new DALExeption();
+            if (source.ChildrenList.All(x => x.Id != idNumber)) throw new DALException("There is no Child with this id");
             var child = from item in source.ChildrenList
                         where item.Id == idNumber
                         select (Child)MemberwiseClone();
@@ -212,7 +212,7 @@ namespace DAL
 
         public BE.Nanny GetNanny(int idNumber)
         {
-            if (source.NannyList.All(x => x.Id != idNumber)) throw new DALExeption();
+            if (source.NannyList.All(x => x.Id != idNumber)) throw new DALException("There is no nanny with this id");
             var nanny = from item in source.NannyList
                         where item.Id == idNumber
                         select (Nanny)MemberwiseClone();
@@ -221,7 +221,7 @@ namespace DAL
 
         public BE.Mother GetMother(int idNumber)
         {
-            if (source.MotherList.All(x => x.Id != idNumber)) throw new DALExeption();
+            if (source.MotherList.All(x => x.Id != idNumber)) throw new DALException("There is no mother with this id");
             var mother = from item in source.MotherList
                         where item.Id == idNumber
                         select (Mother)MemberwiseClone();
@@ -230,7 +230,7 @@ namespace DAL
 
         public BE.Contract GetContract(int idNumber)
         {
-            if (source.ContractList.All(x => x.ChildId != idNumber)) throw new DALExeption();
+            if (source.ContractList.All(x => x.ChildId != idNumber)) throw new DALException("There is no contract with this id child");
             var con = from item in source.ContractList
                         where item.ChildId == idNumber
                         select (Contract)MemberwiseClone();

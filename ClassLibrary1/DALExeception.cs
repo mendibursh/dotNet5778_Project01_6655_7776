@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 namespace DAL
 {
 	[Serializable]
-    class DALException : Exception
+	 public  class DALException : Exception
     {
 		public DALException() : base() { }
 		public DALException(string message) : base(message) { }
