@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace DS
 {
-    public class DataSource
+    public static class DataSource
     {
-        public List<BE.Nanny> NannyList = new List<BE.Nanny>();
-        public List<BE.Mother> MotherList  = new List<BE.Mother>();
-        public List<BE.Child> ChildrenList=  new List<BE.Child>	();
-        public List<BE.Contract> ContractList=  new List<BE.Contract> ();
+        public static List<BE.Nanny> NannyList=new List<BE.Nanny>();
+        public static List<BE.Mother> MotherList = new List<BE.Mother>();
+        public static List<BE.Child> ChildrenList = new List<BE.Child>();
+        public static List<BE.Contract> ContractList = new List<BE.Contract>();
 
-        DataSource() { }
+        static DataSource() { }
     }
 }

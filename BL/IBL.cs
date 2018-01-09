@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    interface IBL
+    public interface IBL
     {
         void addNanny(BE.Nanny nan);
         void removeNanny(int id);
@@ -28,6 +28,10 @@ namespace BL
         List<BE.Mother> getMothers();
         List<BE.Child> getChildren();
         List<BE.Contract> getContracts();
+
+		List<BE.Nanny> getNannisOrderToMotherNeeds(int motherId);
+        List<BE.Nanny> getOrderCompatibilityNannies(int idNumber);
+        bool checkCompatibilityMotherNanny(BE.Nanny nan, BE.Mother mam);
 
     }
 }

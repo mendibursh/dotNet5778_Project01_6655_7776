@@ -8,14 +8,12 @@ using GoogleMapsApi.Entities.Directions.Request;
 using GoogleMapsApi;
 using GoogleMapsApi.Entities.Directions.Response;
 using System.Threading;
-using DAL;
 
 namespace BL
 {
-    public class Bl_imp : IBL 
+    public class Bl_imp : IBL
     {
         DAL.IDAL dl;
-		
 
         public Bl_imp()
         {
@@ -24,18 +22,28 @@ namespace BL
 
         public void addChild(Child child)
         {
-			try	{ dl.addChild(child);}
-			catch (DALException exception) { throw new BlExeception(exception.Message); }
-            
+            dl.addChild(child);//clone????
         }
 
+        /// <summary>
+        ///adds a new contract to the list of contracts
+        /// 
+        /// Exception:
+        /// 1.if there not are a mother or nanny
+        /// 2.if there are another contract for this child
+        /// 3.if the age of the child iz not ligal
+        /// 4.if the capacity of children by the nanny is full
+        /// 
+        /// </summary>
+        /// <param name="con">Contract item</param>
         public void addContract(Contract con)
         {
-            BE.Child toCheckChild = dl.GetChild(con.ChildId);
+            //check the age of the child
+            Child toCheckChild = dl.GetChild(con.ChildId);
             TimeSpan minAge = new TimeSpan(90);
             if ((toCheckChild.BirthDate - DateTime.Now) < minAge) throw new Exception();
 
-            BE.Nanny nanny = dl.GetNanny(con.NannyId);
+            Nanny nanny = dl.GetNanny(con.NannyId);
             List<Contract> countContract = dl.getContracts();
             
             //check how much brothers the child have by the Nanny
@@ -44,10 +52,10 @@ namespace BL
                 if (countContract[i].MotherId == con.MotherId && countContract[i].NannyId == con.NannyId )
                     k++;
 
-            con.Salary = SalaryPerMonth(nanny, con.IsHourlyRate,k);
             //update the salary to all contract
+            con.Salary = SalaryPerMonth(nanny, con.IsHourlyRate,k);
 
-            //check if the contract is full
+            //check if the contract of this nanny is full
             int l = 0;
             for (int i = 0; i < countContract.Count(); ++i)
                 if (countContract[i].NannyId == con.NannyId)
@@ -58,7 +66,7 @@ namespace BL
         }
 
         /// <summary>
-        /// Calculates the wages for child care
+        /// Calculates the salary for child care
         /// 
         /// Exception:
         /// if the nother asks to calculate according to hour, and the nanny does not allow
@@ -72,7 +80,7 @@ namespace BL
             double salary = 0;
             if (!isDalyRate)
             {
-                salary = nan.RateOfMonth;
+                salary = nan.SallaryPerMonths;
             }
             else
             {
@@ -88,7 +96,7 @@ namespace BL
                     }
                 }
                 //calculation of the full monthly salary
-                salary = (timeWeekWork * 4) * nan.RateOfHour;
+                salary = (timeWeekWork * 4) * nan.SallaryPerHour;
                 //calculation of discount
                 double PercentDiscount = (salary * (someBrothers) * 2) / 100;
                 salary -= PercentDiscount;
@@ -96,93 +104,275 @@ namespace BL
             return salary;
         }
 
+        /// <summary>
+        /// adds a new mother to the list of mothers
+        /// </summary>
+        /// <param name="mam">a Mother item</param>
         public void addMother(Mother mam)
         {
-			try { dl.addMother(mam); }
-			catch (DALException exception) { throw new BlExeception(exception.Message); }
-		}
+            dl.addMother(mam);
+        }
 
+        /// <summary>
+        /// adds a new nanny to the list of nannis
+        /// </summary>
+        /// <param name="nan">a Nenny item</param>
         public void addNanny(Nanny nan)
         {
             TimeSpan minAge = new TimeSpan(365 * 18);
             if ( DateTime.Now - nan.BirthDate < minAge) throw new Exception();
-			try { dl.addNanny(nan); }
-			catch (DALException exception) { throw new BlExeception(exception.Message); }
-		}
+            dl.addNanny(nan);
+        }
 
+        
         public List<Child> getChildren()
         {
-			try { return dl.getChildren(); }
-			catch (DALException exception) { throw new BlExeception(exception.Message); }
-		}
+            return dl.getChildren();
+        }
 
         public List<Contract> getContracts()
         {
-			try { return dl.getContracts(); }
-			catch (DALException exception) { throw new BlExeception(exception.Message); }
-		}
+            return dl.getContracts();
+        }
 
         public List<Mother> getMothers()
         {
-			try { return dl.getMothers(); }
-			catch (DALException exception) { throw new BlExeception(exception.Message); }
-		}
+            return dl.getMothers();
+        }
 
         public List<Nanny> getNannis()
         {
-			try { return dl.getNannis(); }
-			catch (DALException exception) { throw new BlExeception(exception.Message); }
-		}
+            return dl.getNannis();
+        }
 
         public void removeChild(int id)
         {
-			try { dl.removeChild(id); }
-			catch (DALException exception) { throw new BlExeception(exception.Message); }
-		}
+            dl.removeChild(id);
+        }
 
         public void removeContract(int ContractNumber)
         {
-			try { dl.removeContract(ContractNumber); }
-			catch (DALException exception) { throw new BlExeception(exception.Message); }
-		}
+            dl.removeContract(ContractNumber);
+          
+        }
 
         public void removeMother(int id)
         {
-			try { dl.removeMother(id); }
-			catch (DALException exception) { throw new BlExeception(exception.Message); }
-		}
+            dl.removeMother(id);
+            //we need to remove all hir contracts and children.
+        }
 
         public void removeNanny(int id)
         {
-			try { dl.removeNanny(id); }
-			catch (DALException exception) { throw new BlExeception(exception.Message); }
-		}
+            dl.removeNanny(id);
+            //we need to remove all hir contracts
+        }
 
         public void updateChildDetails(Child child)
         {
-			try { dl.updateChildDetails(child); }
-			catch (DALException exception) { throw new BlExeception(exception.Message); }
-		}
+            dl.updateChildDetails(child);
+        }
 
         public void updateContract(Contract con)
         {
-			try { dl.updateContract(con); }
-			catch (DALException exception) { throw new BlExeception(exception.Message); }
-		}
+            dl.updateContract(con);
+        }
 
         public void updateMotherDetalse(Mother mam)
         {
-			try {dl.updateMotherDetalse(mam); }
-			catch (DALException exception) { throw new BlExeception(exception.Message); }
-		}
+            dl.updateMotherDetalse(mam);
+        }
 
         public void updateNannyDetails(Nanny nan)
         {
 			TimeSpan minAge = new TimeSpan(365 * 18);
             if (nan.BirthDate - DateTime.Now < minAge) throw new Exception();
-			try { dl.updateNannyDetails(nan); }
-			catch (DALException exception) { throw new BlExeception(exception.Message); }
-		}
+            dl.updateNannyDetails(nan);
+        }
+
+        /// <summary>
+        /// returns enumeretor of the collection of the nannies are compatible with the mother's needs 
+        /// </summary>
+        /// <param name="motherId">the mothers id to comper</param>
+        /// <returns></returns>
+        public List<Nanny> getNannisOrderToMotherNeeds(int motherId)
+        {
+            Mother corentMother = dl.GetMother(motherId);
+            List <Nanny> nannyList = dl.getNannis();
+            var compatibilityNannis = from item in nannyList
+                                      where checkCompatibilityMotherNanny(item, corentMother)
+                                      select item;
+            return compatibilityNannis.ToList();
+        }
+
+        /// <summary>
+        /// Checks the compatibility between the nanny and the mother needs
+        /// 
+        /// return true if the nnany compatiabil in the time of work
+        /// return false if thay not compatiabil in the time of work
+        /// </summary>
+        /// <param name="nan">Nanny object to comper</param>
+        /// <param name="mam">Mother object to comper</param>
+        /// <returns></returns>
+        public bool checkCompatibilityMotherNanny(Nanny nan, Mother mam)
+        {
+            
+            for (int i = 0; i < 6; ++i)
+            {   //Full day no compatibility
+                if (mam.weekWork[i] == true && nan.workDay[i] == false)
+                {
+                    return false;
+                }
+                else if (mam.weekWork[i] && nan.workDay[i])
+                {//There is no compatibility during work hours
+                    if (mam.TimeWork[0, i] < nan.timeOfWork[0, i] || mam.TimeWork[1,i]> nan.timeOfWork[1,i] )
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// get the closest nanny by compatibility or by matches the hour and the days to the mother needs 
+        /// </summary>
+        /// <param name="idNumber">Id's mom</param>
+        /// <returns>return the list of the nannies there are much to the mom's need or the 5 closest nannies</returns>
+        public List<Nanny> getOrderCompatibilityNannies(int idNumber)
+        {
+            List<Nanny> nannies = getNannisOrderToMotherNeeds(idNumber);
+            if (nannies.Count == 0)
+            {
+                return getFiveClosestNannis(idNumber);
+            }
+            else
+            {
+                return nannies;
+            }
+  
+        }
+
+        /// <summary>
+        /// get the five closest nannies by the one prameter is the expiriance of the nanny and the salary and the floor
+        /// </summary>
+        /// <param name="idNumber">id's mom</param>
+        /// <returns>the 5 closest nannies</returns>
+        public List<Nanny> getFiveClosestNannis(int idNumber)
+        {
+            Mother tempMom = dl.GetMother(idNumber);
+            List<Nanny> tempNannies = getNannis();
+            var nannies = from item in tempNannies
+                          orderby item.Experience descending, item.SallaryPerHour, item.Floor
+                          select item;
+            return nannies.Take(5).ToList();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="MotherId"></param>
+        /// <param name="distance"></param>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        public List<Nanny> nannisByDistance(int MotherId, int distance, string address = null)
+        {
+            Mother TempMother = dl.GetMother(MotherId);
+            List<Nanny> tempNanniesList = getNannisOrderToMotherNeeds(MotherId);
+            List<Nanny> temp =null;
+            if (tempNanniesList.Count > 0)
+            {
+                if (address != null)
+                {
+                    temp = (from item in tempNanniesList
+                            let dis = CalculateDistance(item.Address, address)
+                            orderby dis
+                            select item).ToList();
+                }
+                else
+                {
+                    temp = (from item in tempNanniesList
+                            let dis = CalculateDistance(item.Address, TempMother.Address)
+                            where dis <= distance
+                            orderby dis
+                            select item).ToList();
+                }
+                if (temp.Count == 0) throw new Exception();
+                return temp;
+            }
+            else throw new Exception();
+        }
+    
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public List<Child> getCehildrenWhitoutNanny()
+        {
+            List<Child> tempChildList = getChildren();
+            List<Contract> tempContractList = getContracts();
+
+            var temp = from item1 in tempChildList
+                       from item2 in tempContractList
+                       where item1.Id != item2.ChildId
+                       select item1;
+            return temp.ToList();
+        }
+
+
+        /// <summary>
+        /// gets the nannies by the vaction of the nannies
+        /// </summary>
+        /// <returns>List of this nannies</returns>
+        public List<Nanny> getNanniesByTHMATVaction()
+        {
+            List<Nanny> tempNannyList = getNannis();
+
+            var temp = from item in tempNannyList
+                       where item.MinistryEducationVaction == false
+                       select item;
+            return temp.ToList();
+        }
+
+        
+        /// <summary>
+        /// get list from a delegte with condition, and return the list of them if its null return the all list of contract
+        /// </summary>
+        /// <param name="predicat"> Delegate that get contract and return bool </param>
+        /// <returns></returns>
+        public List<Contract> getContractByDelegate(Func<Contract,bool>predicat = null)
+        {
+            List<Contract> tempContractList = getContracts();
+            if (predicat != null)
+            {
+                var temp = from item in tempContractList
+                           where predicat(item)
+                           select item;
+
+                return temp.ToList();
+            }
+            else return tempContractList;
+        }
+
+        /// <summary>
+        /// Get the number of the contract that fit to the condtion in the delegate
+        /// </summary>
+        /// <param name="predicat">Delegate that get contract and return bool</param>
+        /// <returns>Return int - the number of the items</returns>
+        public int getNumOfContractByDelegate(Func<Contract, bool> predicat = null)
+        {
+            List<Contract> tempContractList = getContracts();
+            if (predicat != null)
+            {
+                var temp = from item in tempContractList
+                           where predicat(item)
+                           select item;
+
+                return temp.ToList().Count;
+            }
+            else return tempContractList.Count;
+        }
+
 
         public static int CalculateDistance(string source, string dest)
         {
@@ -198,12 +388,19 @@ namespace BL
             Leg leg = route.Legs.First();
             return leg.Distance.Value;
         }
-		 public IEnumerable<IGrouping<int, Nanny>> nanniesByChildAge(bool maxAge ,bool byOrder = false)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="maxAge"></param>
+        /// <param name="byOrder"></param>
+        /// <returns></returns>
+		public IEnumerable<IGrouping<int, Nanny>> nanniesByChildAge(bool maxAge ,bool byOrder = false)
 		{
 			TimeSpan minAge = new TimeSpan(1);
 			IEnumerable<IGrouping<int, Nanny>> group = null;
 			List<Nanny> nannyListTemp = getNannis();
-
+            
 			// check if the do the grouping with order or not 
 			if (byOrder)
 			{
@@ -212,13 +409,13 @@ namespace BL
 				if (maxAge)
 				{
 					group = from n in nannyListTemp
-								 group n by n.MinAge_month_Children;
+								 group n by n.MinAge_monthe;
 				}
 				else
 				{
 
 					group = from n in nannyListTemp
-							group n by n.MaxAge_month_Children;
+							group n by n.MaxAge_monthe;
 
 				}
 			
@@ -228,15 +425,15 @@ namespace BL
 				if (maxAge)
 				{
 					group = from n in nannyListTemp
-							orderby n.MinAge_month_Children
-							group n by n.MinAge_month_Children;
+							orderby n.MinAge_monthe
+							group n by n.MinAge_monthe;
 				}
 				else
 				{
 
 					group = from n in nannyListTemp
-							orderby n.MaxAge_month_Children
-							group n by n.MaxAge_month_Children;
+							orderby n.MaxAge_monthe
+							group n by n.MaxAge_monthe;
 
 				}
 			}
@@ -266,44 +463,17 @@ namespace BL
 			return group;
 		}
 
-		/// <summary>
-		/// To caculte the distance between them (the 
-		/// </summary>
-		/// <param name="nan"> the nanny</param>
-		/// <param name="mom"> the mom </param>
-		/// <returns></returns>
+
 		public int nannyAndMomDis ( Nanny nan , Mother mom )
 		{
 
 			// calculte the distance between the mom address to the nanny 
-			int dis = CalculateDistance(nan.Adress, mom.Adress);
+			int dis = CalculateDistance(nan.Address, mom.Address);
 			return dis;
 		}
 
-		public List<Nanny> nannisByDistance(int MotherId , int distance, string address = null)
-		{
-			Mother TempMother = dl.GetMother(MotherId);
 
-			if (address != null)
-			{
-				var temp = from n in 
-							let dis = CalculateDistance(n.adress,address)
-							orderby dis			
-			}
-			else
-			{
-				var temp = from n in
-							let dis = CalculateDistance(n.adress, TempMother.Adress)
-						    orderby dis
-			}
+	}
+	
 
-			foreach var n in temp
-				{
-
-
-				}
-
-
-		}
-    }
 }

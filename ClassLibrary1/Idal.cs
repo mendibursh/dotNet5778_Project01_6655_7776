@@ -3,35 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BE;
 
 namespace DAL
 {
     public interface IDAL
     {
-        void addNanny(BE.Nanny nan);
+        void addNanny(Nanny nan);
         void removeNanny(int id);
-        void updateNannyDetails(BE.Nanny nan);
+        void updateNannyDetails(Nanny nan);
 
-        void addMother(BE.Mother mam);
+        void addMother(Mother mam);
         void removeMother(int id);
-        void updateMotherDetalse(BE.Mother mam);
+        void updateMotherDetalse(Mother mam);
 
-        void addChild(BE.Child child);
+        void addChild(Child child);
         void removeChild(int id);
-        void updateChildDetails(BE.Child child);
+        void updateChildDetails(Child child);
 
-        void addContract(BE.Contract con);
-        void updateContract(BE.Contract con);
+        void addContract(Contract con);
+        void updateContract(Contract con);
         void removeContract(int ContractNumber);
 
-        List<BE.Nanny> getNannis();
-        List<BE.Mother> getMothers();
-        List<BE.Child> getChildren();
-        List<BE.Contract> getContracts();
+        List<Nanny> getNannis();
+        List<Mother> getMothers();
+        List<Child> getChildren();
+        List<Contract> getContracts();
 
-        BE.Child GetChild(int idNumber);
-        BE.Nanny GetNanny(int idNumber);
-        BE.Mother GetMother(int idNumber);
-        BE.Contract GetContract(int idNumber);
+        Child GetChild(int idNumber);
+        Nanny GetNanny(int idNumber);
+        Mother GetMother(int idNumber);
+        Contract GetContract(int idNumber);
     }
 }

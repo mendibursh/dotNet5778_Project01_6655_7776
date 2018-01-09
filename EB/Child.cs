@@ -19,24 +19,24 @@ namespace BE
 
         public DateTime BirthDate { get; set; }
      
-        bool IsSpcialNeed { get; set; }
+        public bool IsSpecalNeed { get; set; }
 
-        string SpicialNeed { get; set; }
+        public string SpicialNeed { get; set; }
 
         public override string ToString()//?????????
         {
             return base.ToString();
         }
 
-        public Child(int id, int motherId, string firstName, string lastName, DateTime birthDate, bool isSpcialNeed, string spicialNeed)
-        {
-            Id = id;
-            MotherId = motherId;
-            FirstName = firstName;
-            LastName = lastName;
-            BirthDate = birthDate;
-            IsSpcialNeed = isSpcialNeed;
-            SpicialNeed = spicialNeed;
-        }
+        //public Child(int id, int motherId, string firstName, string lastName, DateTime birthDate, bool isSpcialNeed, string spicialNeed)
+        //{
+        //    Id = id;
+        //    MotherId = motherId;
+        //    FirstName = firstName;
+        //    LastName = lastName;
+        //    BirthDate = birthDate;
+        //    IsSpecialNeed = isSpcialNeed;
+        //    SpicialNeed = spicialNeed;
+        //}
     }
 }

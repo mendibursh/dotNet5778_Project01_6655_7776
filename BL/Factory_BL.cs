@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassLibrary1
+namespace BL
 {
-    class DALExeception : Exception
+    public static class Factory_BL
     {
+        public static IBL GetIBL()
+        {
+            return new Bl_imp();
+        }
     }
 }
